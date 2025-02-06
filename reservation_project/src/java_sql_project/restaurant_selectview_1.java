@@ -35,6 +35,8 @@ public class restaurant_selectview_1 extends JPanel{
 	public JTextField Idfield;
 	public JLabel Passlabel;
 	public JTextField Passfield;
+	public JButton Menubtn;
+	
 	
 	public JLabel seatlabel;
 	public JTextField seat;
@@ -73,10 +75,14 @@ public class restaurant_selectview_1 extends JPanel{
 		Passfield=new JTextField();
 		Passfield.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
 		Passfield.setPreferredSize(new Dimension(100, 20));
+		Menubtn=new JButton("신규 메뉴 등록");
+		
 		
 		leftpanel.add(registerbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		leftpanel.add(signtbtn);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		leftpanel.add(Menubtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		leftpanel.add(Idlabel);
 		leftpanel.add(Idfield);
@@ -148,6 +154,7 @@ public class restaurant_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				register_restaurant register=new register_restaurant();
 				
 			}
 		});
@@ -156,7 +163,17 @@ public class restaurant_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				//select로 pw, name에 해당하는 식당 정보를 가져오고, 예약 현황도 보여준다.
+			}
+		});
+		
+		Menubtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
 				
+				register_menu_restaurant register=new register_menu_restaurant("", "");
 			}
 		});
 	}

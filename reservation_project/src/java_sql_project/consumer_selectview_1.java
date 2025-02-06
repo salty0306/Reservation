@@ -33,7 +33,7 @@ public class consumer_selectview_1 extends JPanel{
 	public JLabel Passlabel;
 	public JTextField Passfield;
 	
-	public JLabel searchlabel;
+	public JButton searchbtn;
 	public JTextField searchtext;
 	
 	
@@ -117,7 +117,7 @@ public class consumer_selectview_1 extends JPanel{
 		toppanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		toppanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		
-		searchlabel=new JLabel("검색");
+		searchbtn=new JButton("검색");
 		searchtext=new JTextField();
 		searchtext.setMaximumSize(new Dimension(200,40));
 		searchtext.setPreferredSize(new Dimension(200,40));
@@ -127,10 +127,10 @@ public class consumer_selectview_1 extends JPanel{
 		
 		refreshlabel=new JLabel("새로고침");
 		refreshbtn=new JButton("refresh");
-		
-		toppanel.add(searchlabel);
-		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
+
 		toppanel.add(searchtext);
+		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
+		toppanel.add(searchbtn);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		toppanel.add(currentlabel);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
@@ -145,7 +145,7 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				register_consumer register=new register_consumer();
 			}
 		});
 		signtbtn.addActionListener(new ActionListener() {
@@ -153,6 +153,7 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				//select로 pw, name에 해당하는 유저 정보를 가져오고, 예약 현황도 보여준다.
 				
 			}
 		});
