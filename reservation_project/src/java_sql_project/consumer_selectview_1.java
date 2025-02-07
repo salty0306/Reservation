@@ -23,7 +23,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import java_sql_project.domain.consumer;
+import java_sql_project.service.consumer_service;
+
 public class consumer_selectview_1 extends JPanel{
+	public static consumer user;
+	
 	public JPanel leftpanel;
 	public JPanel centerpanel;
 	public JPanel toppanel;
@@ -182,6 +187,11 @@ public class consumer_selectview_1 extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//select로 pw, name에 해당하는 유저 정보를 가져오고, 예약 현황도 보여준다.
+				consumer_service user_service=consumer_service.getInstance();
+				String name=Idfield.getText();
+				String pw=Passfield.getText();
+				user=user_service.login_consumer(name, pw);
+				userfield.setText(user.getName());
 				
 			}
 		});
@@ -190,7 +200,7 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// 이전에 예약 현황을 다시 가져온다
 			}
 		});
 		searchbtn.addActionListener(new ActionListener() {
@@ -198,6 +208,8 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				String type=comboboxitem.getSelectedItem().toString();
+				String word=searchtext.getText();
 				
 			}
 		});
@@ -214,7 +226,10 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				register_reservation reservation=new register_reservation("", "");
+				consumer_service user_service=consumer_service.getInstance();
+				String userid=user.getId();
+				String username=user.getName();
+				register_reservation reservation=new register_reservation(userid, username);
 			}
 		});
 	}

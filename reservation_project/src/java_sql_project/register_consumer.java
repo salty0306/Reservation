@@ -2,15 +2,21 @@ package java_sql_project;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import java_sql_project.domain.consumer;
+import java_sql_project.service.consumer_service;
 
 public class register_consumer extends JFrame{
 	
@@ -87,5 +93,30 @@ public class register_consumer extends JFrame{
 		
 		add(centerpanel,BorderLayout.CENTER);
 		
+		registerbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				consumer_service user_service=consumer_service.getInstance();
+				String nameval=name.getText();
+				String pwval=pw.getText();
+				String emailval=email.getText();
+				String location_stateval=location_state.getText();
+				String location_cityval=location_city.getText();
+				
+				consumer user=new consumer();
+				user.setName(nameval);
+				user.setPw(pwval);
+				user.setEmail(emailval);
+				user.setLocation_state(location_stateval);
+				user.setLocation_city(location_cityval);
+				
+				if(user_service.insert_consumer(user)) {
+					JOptionPane.showMessageDialog(null,"회원가입이 정상적으로 처리되었습니다.","회원 가입 성공!!", JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(null,"알 수 없는 오류로 회원가입이 실패하였습니다.","회원 가입 실패!!", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 	}
 }

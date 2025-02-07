@@ -1,6 +1,7 @@
 package java_sql_project.service;
 
 public class restaurant_service {
+	public static String[] sql_list;
 
 	public restaurant_service() {
 		
