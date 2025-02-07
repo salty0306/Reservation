@@ -11,8 +11,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,15 +34,19 @@ public class consumer_selectview_1 extends JPanel{
 	public JTextField Idfield;
 	public JLabel Passlabel;
 	public JTextField Passfield;
+	public JLabel userlabel;
+	public JTextField userfield;
 	
+	public DefaultComboBoxModel combobox;
+	public JComboBox comboboxitem;
 	public JButton searchbtn;
 	public JTextField searchtext;
-	
 	
 	public JLabel currentlabel;
 	public JButton currentbtn;
 	public JLabel refreshlabel;
 	public JButton refreshbtn;
+	public JButton reservationbtn;
 	
 	public DefaultTableModel model;
 	public JTable datatable;
@@ -71,7 +77,16 @@ public class consumer_selectview_1 extends JPanel{
 		Passfield=new JTextField();
 		Passfield.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
 		Passfield.setPreferredSize(new Dimension(100, 20));
+		userlabel=new JLabel("접속된 손님 이름");
+		userfield=new JTextField();
+		userfield.setEditable(false);
+		userfield.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
+		userfield.setPreferredSize(new Dimension(100, 20));
+		refreshlabel=new JLabel("새로고침");
+		refreshbtn=new JButton("refresh");
+		reservationbtn=new JButton("예약하기");
 		
+				
 		leftpanel.add(registerbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		leftpanel.add(signtbtn);
@@ -80,7 +95,14 @@ public class consumer_selectview_1 extends JPanel{
 		leftpanel.add(Idfield);
 		leftpanel.add(Passlabel);
 		leftpanel.add(Passfield);
-		       
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		leftpanel.add(userlabel);
+		leftpanel.add(userfield);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		leftpanel.add(refreshlabel);
+		leftpanel.add(refreshbtn);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		leftpanel.add(reservationbtn);
 		add(leftpanel, BorderLayout.WEST);
 		
 		
@@ -90,7 +112,9 @@ public class consumer_selectview_1 extends JPanel{
 		centerpanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		centerpanel.setBackground(Color.WHITE);
 		
+		//컬럼은 나중에 동적으로 추가
 		model=new DefaultTableModel();
+		
 		model.addColumn("col1");
 		model.addColumn("col2");
 		model.addColumn("col3");
@@ -117,6 +141,14 @@ public class consumer_selectview_1 extends JPanel{
 		toppanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		toppanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		
+		combobox=new DefaultComboBoxModel<String>();
+		combobox.addElement("메뉴");
+		combobox.addElement("위치(큰 도시)");
+		combobox.addElement("위치(작은 도시)");
+		combobox.addElement("식당 이름");
+		combobox.addElement("식당 소유자 이름");
+		comboboxitem=new JComboBox<>(combobox);
+		
 		searchbtn=new JButton("검색");
 		searchtext=new JTextField();
 		searchtext.setMaximumSize(new Dimension(200,40));
@@ -125,9 +157,7 @@ public class consumer_selectview_1 extends JPanel{
 		currentlabel=new JLabel("현황");
 		currentbtn=new JButton("예약 보기");
 		
-		refreshlabel=new JLabel("새로고침");
-		refreshbtn=new JButton("refresh");
-
+		toppanel.add(comboboxitem);
 		toppanel.add(searchtext);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		toppanel.add(searchbtn);
@@ -136,8 +166,6 @@ public class consumer_selectview_1 extends JPanel{
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		toppanel.add(currentbtn);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
-		toppanel.add(refreshlabel);
-		toppanel.add(refreshbtn);
 		add(toppanel,BorderLayout.NORTH);
 		
 		registerbtn.addActionListener(new ActionListener() {
@@ -155,6 +183,38 @@ public class consumer_selectview_1 extends JPanel{
 				// TODO Auto-generated method stub
 				//select로 pw, name에 해당하는 유저 정보를 가져오고, 예약 현황도 보여준다.
 				
+			}
+		});
+		refreshbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		searchbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		currentbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		reservationbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				register_reservation reservation=new register_reservation("", "");
 			}
 		});
 	}

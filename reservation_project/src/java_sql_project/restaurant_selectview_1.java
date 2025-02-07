@@ -36,10 +36,12 @@ public class restaurant_selectview_1 extends JPanel{
 	public JLabel Passlabel;
 	public JTextField Passfield;
 	public JButton Menubtn;
+	public JButton Menulist;
+	public JLabel restaurant_name_label;
+	public JTextField restaurant_name;
 	
-	
-	public JLabel seatlabel;
-	public JTextField seat;
+	//public JLabel seatlabel;
+	//public JTextField seat;
 	public JLabel openlabel;
 	public JCheckBox openchbox;
 	public JLabel refreshlabel;
@@ -76,7 +78,7 @@ public class restaurant_selectview_1 extends JPanel{
 		Passfield.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
 		Passfield.setPreferredSize(new Dimension(100, 20));
 		Menubtn=new JButton("신규 메뉴 등록");
-		
+		Menulist=new JButton("메뉴 조회");
 		
 		leftpanel.add(registerbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -88,7 +90,8 @@ public class restaurant_selectview_1 extends JPanel{
 		leftpanel.add(Idfield);
 		leftpanel.add(Passlabel);
 		leftpanel.add(Passfield);
-		       
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		leftpanel.add(Menulist);
 		add(leftpanel, BorderLayout.WEST);
 		
 		
@@ -98,6 +101,7 @@ public class restaurant_selectview_1 extends JPanel{
 		centerpanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		centerpanel.setBackground(Color.WHITE);
 		
+		//컬럼은 나중에 동적으로 추가
 		model=new DefaultTableModel();
 		model.addColumn("col1");
 		model.addColumn("col2");
@@ -125,11 +129,18 @@ public class restaurant_selectview_1 extends JPanel{
 		toppanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		toppanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		
-		seatlabel=new JLabel("남은 자리");
-		seat=new JTextField("0");
-		seat.setEditable(false);
-		seat.setMaximumSize(new Dimension(40,20));
-		seat.setPreferredSize(new Dimension(40,20));
+		restaurant_name_label=new JLabel("접속된 식당 이름:");
+		restaurant_name=new JTextField();
+		restaurant_name.setEditable(false);
+		restaurant_name.setMaximumSize(new Dimension(100, 20));
+		restaurant_name.setPreferredSize(new Dimension(100, 20));
+		
+		
+		//seatlabel=new JLabel("남은 자리");
+		//seat=new JTextField("0");
+		//seat.setEditable(false);
+		//seat.setMaximumSize(new Dimension(40,20));
+		//seat.setPreferredSize(new Dimension(40,20));
 		
 		openlabel=new JLabel("영업 여부");
 		openchbox=new JCheckBox();
@@ -137,12 +148,16 @@ public class restaurant_selectview_1 extends JPanel{
 		refreshlabel=new JLabel("새로고침");
 		refreshbtn=new JButton("refresh");
 		
-		toppanel.add(seatlabel);
+		toppanel.add(restaurant_name_label);
+		toppanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		toppanel.add(restaurant_name);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
-		toppanel.add(seat);
+		//toppanel.add(seatlabel);
+		//toppanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		//toppanel.add(seat);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		toppanel.add(openlabel);
-		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
+		toppanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		toppanel.add(openchbox);
 		toppanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		toppanel.add(refreshlabel);
@@ -164,6 +179,11 @@ public class restaurant_selectview_1 extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//select로 pw, name에 해당하는 식당 정보를 가져오고, 예약 현황도 보여준다.
+				String name=Idfield.getText();
+				String pw=Passfield.getText();
+				
+				
+				System.out.println(name+": "+pw);
 			}
 		});
 		
