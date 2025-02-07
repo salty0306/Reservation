@@ -16,7 +16,6 @@ public class register_restaurant extends JFrame{
 	
 	public JPanel centerpanel;
 	
-	
 	public JLabel name_label;
 	public JTextField name;
 	public JLabel owner_name_label;
@@ -34,7 +33,7 @@ public class register_restaurant extends JFrame{
 	
 	public register_restaurant() {
 		setTitle("신규 식당 등록");
-        setSize(1000, 500);
+        setSize(500, 500);
         setVisible(true);
 		setLayout(new BorderLayout());
 		
