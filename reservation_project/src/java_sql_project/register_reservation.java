@@ -109,14 +109,14 @@ public class register_reservation extends JFrame{
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("날짜나 시간 입력 형식이 잘못되었습니다.");
-					JOptionPane.showMessageDialog(null,restarant_name_value+"에 예약하는 것에 실패하였습니다.","예약 실패!!", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"날짜나 시간 입력 형식이 잘못되었습니다.","예약 실패!!", JOptionPane.WARNING_MESSAGE);
 					e1.printStackTrace();
 					return;
 				}
 				
 				newreserve.setConsumer_id(userid);
 				newreserve.setNumber_of_people(num);
-				if(reserve_service.reservation_register(newreserve)) {
+				if(reserve_service.reservation_register(newreserve,restarant_name_value)) {
 					System.out.println("예약이 정상적으로 처리되었습니다.");
 					JOptionPane.showMessageDialog(null,restarant_name_value+"에 예약이 정상적으로 처리되었습니다.","예약 완료!!", JOptionPane.INFORMATION_MESSAGE);
 				}else {

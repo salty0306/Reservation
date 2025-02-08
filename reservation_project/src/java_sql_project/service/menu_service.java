@@ -1,7 +1,9 @@
 package java_sql_project.service;
 
 public class menu_service {
-	public static String[] sql_list;
+	public static String[] sql_list = {
+			
+	};
 
 	public menu_service() {
 		

@@ -26,7 +26,9 @@ public class consumer_service {
 			+ "location_state = VALUES(location_state), location_city = VALUES(location_city)",
 			"SELECT COUNT(*) FROM Consumers WHERE (consumer_name=?)",
 			"SELECT * FROM Consumers WHERE (consumer_name=?) and (consumer_pw=?)",
-			"SELECT * FROM Consumers"};
+			"SELECT * FROM Consumers",
+			"SELECT * FROM Consumers where (consumer_id = ?)",
+			"SELECT * FROM Consumers where (consumer_name = ?)"};
 	
 	public consumer_service() {
 		
@@ -170,6 +172,74 @@ public class consumer_service {
 		return login_user;
 	}
 	
-	//회원 정보 출력,이름과 아이디를 입력받고 해당 회원 출력(select 문)
 	
+	//회원 정보 출력, 아이디를 입력받고 해당 회원 출력(select 문)
+	public consumer get_consumer(String userid) {
+		consumer user_info=new consumer();
+		String sql=sql_list[5];
+		Connection conn=database_connection.conection();
+		
+		try {
+			pstd=conn.prepareStatement(sql);
+			pstd.setString(1, userid);
+			rst=pstd.executeQuery();
+			rst.next();
+
+			String consumer_id=rst.getString("consumer_id");
+            String consumer_name=rst.getString("consumer_name");
+            String consumer_pw=rst.getString("consumer_pw");
+            String email=rst.getString("email");
+            String location_state=rst.getString("location_state");
+            String location_city=rst.getString("location_city");
+            
+            user_info.setId(consumer_id);
+            user_info.setName(consumer_name);
+            user_info.setPw(consumer_pw);
+            user_info.setEmail(email);
+            user_info.setLocation_state(location_state);
+            user_info.setLocation_city(location_city);
+            
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("회원이 존재하지 않습니다.");
+			e.printStackTrace();
+		}
+		
+		return user_info;
+	}
+	
+	//회원 정보 출력, 이름을 입력받고 해당 회원 출력(select 문)
+	public consumer get_consumer_2(String username) {
+			consumer user_info=new consumer();
+			String sql=sql_list[6];
+			Connection conn=database_connection.conection();
+			
+			try {
+				pstd=conn.prepareStatement(sql);
+				pstd.setString(1, username);
+				rst=pstd.executeQuery();
+				rst.next();
+
+				String consumer_id=rst.getString("consumer_id");
+	            String consumer_name=rst.getString("consumer_name");
+	            String consumer_pw=rst.getString("consumer_pw");
+	            String email=rst.getString("email");
+	            String location_state=rst.getString("location_state");
+	            String location_city=rst.getString("location_city");
+	            
+	            user_info.setId(consumer_id);
+	            user_info.setName(consumer_name);
+	            user_info.setPw(consumer_pw);
+	            user_info.setEmail(email);
+	            user_info.setLocation_state(location_state);
+	            user_info.setLocation_city(location_city);
+	            
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("회원이 존재하지 않습니다.");
+				e.printStackTrace();
+			}
+			
+			return user_info;
+		}
 }
