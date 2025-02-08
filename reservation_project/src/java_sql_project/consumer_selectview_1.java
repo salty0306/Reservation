@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -199,7 +200,8 @@ public class consumer_selectview_1 extends JPanel{
 				String pw=Passfield.getText();
 				user=user_service.login_consumer(name, pw);
 				userfield.setText(user.getName());
-				
+				Idfield.setText("");
+				Passfield.setText("");
 			}
 		});
 		refreshbtn.addActionListener(new ActionListener() {
@@ -207,7 +209,10 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				// 이전에 예약 현황을 다시 가져온다
+				// 새롭게 식당 목록을 업데이트 한다.
+				List<restaurant> refresh_list=rest_service.restaurant_list();
+				model=restauranttable(refresh_list);
+				datatable.setModel(model);
 			}
 		});
 		searchbtn.addActionListener(new ActionListener() {
@@ -218,6 +223,8 @@ public class consumer_selectview_1 extends JPanel{
 				String type=comboboxitem.getSelectedItem().toString();
 				String word=searchtext.getText();
 				
+				
+				
 			}
 		});
 		currentbtn.addActionListener(new ActionListener() {
@@ -225,6 +232,7 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				String username=userfield.getText();
 				
 			}
 		});
@@ -233,10 +241,16 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				consumer_service user_service=consumer_service.getInstance();
-				String userid=user.getId();
-				String username=user.getName();
-				register_reservation reservation=new register_reservation(userid, username);
+				if(user!=null)
+				{				
+					consumer_service user_service=consumer_service.getInstance();
+					String userid=user.getId();
+					String username=user.getName();
+					register_reservation reservation=new register_reservation(userid, username);
+				}else {
+					JOptionPane.showMessageDialog(null,"로그인을 해주세요!!","예약 실패!!", JOptionPane.WARNING_MESSAGE);
+
+				}
 			}
 		});
 	}
