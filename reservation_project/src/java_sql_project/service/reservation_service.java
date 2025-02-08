@@ -32,7 +32,7 @@ public class reservation_service {
 			"SELECT * FROM Reservations where (consumer_id = ?) and (reservation_date = ?) and (reservation_time = ?)",
 			"INSERT INTO Reservations VALUES (?, ?, ?, ?, ?, ?, 'confirmed', NOW())",
 			"DELETE FROM Reservations WHERE CONCAT(reservation_date, ' ', reservation_time) < NOW()",
-			"DELETE FROM Reservations where (consumer_id = ?) and (restaurant_id = ?)",
+			"DELETE FROM Reservations where (consumer_id = ?) and (restaurant_id = ?) and (reservation_date = ?)",
 			"DELETE FROM Reservations where ()",
 			"SELECT COUNT(*) FROM Reservations"
 	};
@@ -284,7 +284,26 @@ public class reservation_service {
 		return true;
 	}
 	//예약 삭제(손님이 자발적으로)(delete 문)
-	public boolean reservation_delete_consumer() {
-		return true;
+	public boolean reservation_delete_consumer(String restaurant_id, String user_id, String reservation_date) {
+		Connection conn=database_connection.conection();
+		String sql=sql_list[7];
+		try {
+			pstd=conn.prepareStatement(sql);
+			pstd.setString(1, user_id);
+			pstd.setString(2, restaurant_id);
+			pstd.setDate(3, Date.valueOf(reservation_date));
+			
+			int deletenum=pstd.executeUpdate();
+			if(deletenum>0) {
+				System.out.println(deletenum+" 건의 예약이 삭제되었습니다.");
+				return true;
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

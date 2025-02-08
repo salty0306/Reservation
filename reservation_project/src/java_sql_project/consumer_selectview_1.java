@@ -64,6 +64,11 @@ public class consumer_selectview_1 extends JPanel{
 	public JButton refreshbtn;
 	public JButton reservationbtn;
 	
+	public JLabel cancellabel;
+	public JTextField cancelres;
+	public JTextField canceldate;
+	public JButton reservationcancelbtn;
+	
 	public DefaultTableModel model;
 	public JTable datatable;
 	public consumer_selectview_1() {
@@ -100,8 +105,18 @@ public class consumer_selectview_1 extends JPanel{
 		userfield.setPreferredSize(new Dimension(100, 20));
 		refreshlabel=new JLabel("새로고침");
 		refreshbtn=new JButton("refresh");
+		
 		reservationbtn=new JButton("예약하기");
 		
+		cancellabel=new JLabel("예약 취소");
+		cancellabel.setToolTipText("식당의 아이디를 입력하고 예약 날짜를 '2000-01-01' 형태로 입력해주세요");
+		cancelres=new JTextField();
+		cancelres.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
+		cancelres.setPreferredSize(new Dimension(100, 20));
+		canceldate=new JTextField();
+		canceldate.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
+		canceldate.setPreferredSize(new Dimension(100, 20));
+		reservationcancelbtn=new JButton("예약취소 하기");
 				
 		leftpanel.add(registerbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -119,6 +134,11 @@ public class consumer_selectview_1 extends JPanel{
 		leftpanel.add(refreshbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		leftpanel.add(reservationbtn);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		leftpanel.add(cancellabel);
+		leftpanel.add(cancelres);
+		leftpanel.add(canceldate);
+		leftpanel.add(reservationcancelbtn);
 		add(leftpanel, BorderLayout.WEST);
 		
 		
@@ -279,6 +299,25 @@ public class consumer_selectview_1 extends JPanel{
 				}else {
 					JOptionPane.showMessageDialog(null,"로그인을 해주세요!!","예약 실패!!", JOptionPane.WARNING_MESSAGE);
 
+				}
+			}
+		});
+		
+		reservationcancelbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reservation_service cacelservice=reservation_service.getInstance();
+				if(user!=null) {
+					String userid=user.getId();
+					String resid=cancelres.getText();
+					String date=canceldate.getText();
+					
+					if(cacelservice.reservation_delete_consumer(resid, userid, date)) {
+						JOptionPane.showMessageDialog(null,"예약 삭제가 정상적으로 처리되었습니다.","예약 삭제!!", JOptionPane.INFORMATION_MESSAGE);
+					}else {
+						JOptionPane.showMessageDialog(null,"예약 취소에 실패했습니다!!","예약 취소 실패!!", JOptionPane.WARNING_MESSAGE);
+					}
 				}
 			}
 		});
