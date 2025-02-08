@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import java_sql_project.domain.restaurant;
 import java_sql_project.setting.database_connection;
@@ -28,6 +30,45 @@ public class restaurant_service {
 	
 	public static restaurant_service getInstance() {
 		return restaurant_service_provider;
+	}
+	//식당 전체 목록 출력
+	public List<restaurant> restaurant_list(){
+		Connection conn=database_connection.conection();
+		List<restaurant> list=new ArrayList<>();
+		String sql=sql_list[0];
+		
+		try {
+			stmt=conn.createStatement();
+			rst=stmt.executeQuery(sql);
+			while(rst.next()) {
+				
+				restaurant element=new restaurant();
+
+				String restaurant_id=rst.getString("restaurant_id");
+	            String restaurant_name=rst.getString("restaurant_name");
+	            String owner_name=rst.getString("owner_name");
+	            String owner_pw=rst.getString("owner_pw");
+	            String res_location_state=rst.getString("res_location_state");
+	            String res_location_city=rst.getString("res_location_city");
+	            String description=rst.getString("description");
+
+	            element.setId(restaurant_id);
+	            element.setName(restaurant_name);
+	            element.setOwner_name(owner_name);
+	            element.setOwner_pw(owner_pw);
+	            element.setLocation_state(res_location_state);
+	            element.setLocation_city(res_location_city);
+	            element.setDescription(description);
+				list.add(element);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        database_connection.close();
+		return list;
 	}
 	
 	//식당 등록(insert 문)

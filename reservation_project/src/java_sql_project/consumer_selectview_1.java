@@ -8,6 +8,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,10 +27,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java_sql_project.domain.consumer;
+import java_sql_project.domain.restaurant;
 import java_sql_project.service.consumer_service;
+import java_sql_project.service.reservation_service;
+import java_sql_project.service.restaurant_service;
+import java_sql_project.setting.database_connection;
 
 public class consumer_selectview_1 extends JPanel{
 	public static consumer user;
+	public restaurant_service rest_service;
 	
 	public JPanel leftpanel;
 	public JPanel centerpanel;
@@ -117,14 +125,13 @@ public class consumer_selectview_1 extends JPanel{
 		centerpanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		centerpanel.setBackground(Color.WHITE);
 		
-		//컬럼은 나중에 동적으로 추가
-		model=new DefaultTableModel();
+		//초기에 실행시 예약 가능한 식당 목록 출력
+		rest_service=restaurant_service.getInstance();
+		List<restaurant> restaurant_list=new ArrayList<>();
+		restaurant_list=rest_service.restaurant_list();
 		
-		model.addColumn("col1");
-		model.addColumn("col2");
-		model.addColumn("col3");
-		model.addColumn("col4");
-		model.addColumn("col5");
+		model=restauranttable(restaurant_list);
+		
 		datatable=new JTable(model);
 		datatable.setEnabled(false);
 		datatable.setBackground(Color.WHITE); 
@@ -232,5 +239,39 @@ public class consumer_selectview_1 extends JPanel{
 				register_reservation reservation=new register_reservation(userid, username);
 			}
 		});
+	}
+	
+	public DefaultTableModel restauranttable(List<restaurant> listdata) {
+		DefaultTableModel newmodel=new DefaultTableModel();
+
+		newmodel.addColumn("rownum");
+		newmodel.addColumn("restaurant name");
+		newmodel.addColumn("owner name");
+		newmodel.addColumn("location(state)");
+		newmodel.addColumn("location(city)");
+		newmodel.addColumn("food type");
+		for(int i=0;i<listdata.size();i++) {
+			
+			restaurant data=listdata.get(i);
+	        System.out.println(newmodel.getRowCount());
+	        
+			String resname=data.getName();
+			String resowner=data.getOwner_name();
+			String resloc_state=data.getLocation_state();
+			String resloc_city=data.getLocation_city();
+			String restype=data.getDescription();
+			Vector<String> row=new Vector<>(); 
+
+			row.add(String.valueOf(i+1));
+			row.add(resname);
+			row.add(resowner);
+			row.add(resloc_state);
+			row.add(resloc_city);
+			row.add(restype);
+			
+			newmodel.addRow(row);
+		}
+		
+		return newmodel;
 	}
 }
