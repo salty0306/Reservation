@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -28,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java_sql_project.domain.consumer;
+import java_sql_project.domain.reservation;
 import java_sql_project.domain.restaurant;
 import java_sql_project.service.consumer_service;
 import java_sql_project.service.reservation_service;
@@ -159,7 +161,7 @@ public class consumer_selectview_1 extends JPanel{
 		combobox.addElement("위치(큰 도시)");
 		combobox.addElement("위치(작은 도시)");
 		combobox.addElement("식당 이름");
-		combobox.addElement("음식 종류");
+		combobox.addElement("소유자 이름");
 		comboboxitem=new JComboBox<>(combobox);
 		
 		searchbtn=new JButton("검색");
@@ -223,20 +225,30 @@ public class consumer_selectview_1 extends JPanel{
 				String type=comboboxitem.getSelectedItem().toString();
 				String word=searchtext.getText();
 				List<restaurant> search_list=new ArrayList<>();
-				
+				restaurant search_one=null;
 				switch(type) {
 				case "메뉴":
+					search_list=rest_service.get_restaurant_type(word);
 					break;
 				case "위치(큰 도시)":
+					search_list=rest_service.get_restaurant_state(word);
 					break;
 				case "위치(작은 도시)":
+					search_list=rest_service.get_restaurant_city(word);
 					break;
 				case "식당 이름":
+					search_one=rest_service.get_restaurant_name(word);
 					break;
-				case "음식 종류":
+				case "소유자 이름":
+					search_list=rest_service.get_restaurant_owner(word);
 					break;
 				}
-				model=restauranttable(search_list);
+				if(search_list.size()>0) {
+					model=restauranttable(search_list);
+				}else if(search_one!=null){
+					search_list.add(search_one);
+					model=restauranttable(search_list);
+				}
 				datatable.setModel(model);
 			}
 		});
@@ -245,8 +257,12 @@ public class consumer_selectview_1 extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				reservation_service user_reserve_service=reservation_service.getInstance();
 				String username=userfield.getText();
 				
+				List<reservation> reserve_list=user_reserve_service.reservation_consumer(username);
+				model=reservationtable(reserve_list);
+				datatable.setModel(model);
 			}
 		});
 		reservationbtn.addActionListener(new ActionListener() {
@@ -280,7 +296,6 @@ public class consumer_selectview_1 extends JPanel{
 		for(int i=0;i<listdata.size();i++) {
 			
 			restaurant data=listdata.get(i);
-	        System.out.println(newmodel.getRowCount());
 	        
 			String resname=data.getName();
 			String resowner=data.getOwner_name();
@@ -299,6 +314,38 @@ public class consumer_selectview_1 extends JPanel{
 			newmodel.addRow(row);
 		}
 		
+		return newmodel;
+	}
+	public DefaultTableModel reservationtable(List<reservation> reservation_list) {
+		DefaultTableModel newmodel=new DefaultTableModel();
+		newmodel.addColumn("rownum");
+		newmodel.addColumn("restaurant id");
+		newmodel.addColumn("reservation date");
+		newmodel.addColumn("reservation time");
+		newmodel.addColumn("number");
+		newmodel.addColumn("status");
+		newmodel.addColumn("created_at");
+		for(int i=0;i<reservation_list.size();i++) {
+			reservation data=reservation_list.get(i);
+			
+			String reservation_restaurant_id=data.getRestaurant_id();
+			String reservation_date=String.valueOf(data.getReservation_date());
+			String reservation_time=String.valueOf(data.getReservation_time());
+			int reservation_num=data.getNumber_of_people();
+			String reservation_status=String.valueOf(data.getStatus());
+			String reservation_create=String.valueOf(data.getCreated_at());
+			Vector<String> row=new Vector<>(); 
+
+			row.add(String.valueOf(i+1));
+			row.add(reservation_restaurant_id);
+			row.add(reservation_date);
+			row.add(reservation_time);
+			row.add(String.valueOf(reservation_num));
+			row.add(reservation_status);
+			row.add(reservation_create);
+			
+			newmodel.addRow(row);
+		}
 		return newmodel;
 	}
 }

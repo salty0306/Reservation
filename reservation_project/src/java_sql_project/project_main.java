@@ -18,7 +18,7 @@ public class project_main extends JFrame{
 	
 	public project_main() {
 		setTitle("식당 예약 프로그램");
-		setSize(700, 700);
+		setSize(900, 700);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		this.restaurant=new restaurant_selectview_1();

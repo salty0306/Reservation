@@ -14,7 +14,7 @@ public class reservation {
 	public ReservationStatus status;
 	public Timestamp created_at;
 	public enum ReservationStatus {
-	    CONFIRMED, CANCELLED, OUT_OF_DUE
+	    confirmed, cancelled
 	}
 	public String getId() {
 		return id;
