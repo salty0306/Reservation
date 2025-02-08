@@ -159,7 +159,7 @@ public class consumer_selectview_1 extends JPanel{
 		combobox.addElement("위치(큰 도시)");
 		combobox.addElement("위치(작은 도시)");
 		combobox.addElement("식당 이름");
-		combobox.addElement("식당 소유자 이름");
+		combobox.addElement("음식 종류");
 		comboboxitem=new JComboBox<>(combobox);
 		
 		searchbtn=new JButton("검색");
@@ -222,9 +222,22 @@ public class consumer_selectview_1 extends JPanel{
 				// TODO Auto-generated method stub
 				String type=comboboxitem.getSelectedItem().toString();
 				String word=searchtext.getText();
+				List<restaurant> search_list=new ArrayList<>();
 				
-				
-				
+				switch(type) {
+				case "메뉴":
+					break;
+				case "위치(큰 도시)":
+					break;
+				case "위치(작은 도시)":
+					break;
+				case "식당 이름":
+					break;
+				case "음식 종류":
+					break;
+				}
+				model=restauranttable(search_list);
+				datatable.setModel(model);
 			}
 		});
 		currentbtn.addActionListener(new ActionListener() {
