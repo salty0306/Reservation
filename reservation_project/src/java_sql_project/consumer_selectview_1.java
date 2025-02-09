@@ -387,4 +387,17 @@ public class consumer_selectview_1 extends JPanel{
 		}
 		return newmodel;
 	}
+	
+	public void resetfield() {
+		user=null;
+		userfield.setText("");
+		DefaultTableModel init=initmodel();
+		datatable.setModel(init);
+	}
+	public DefaultTableModel initmodel() {
+		DefaultTableModel newmodel=new DefaultTableModel();
+		List<restaurant> refresh_list=rest_service.restaurant_list();
+		newmodel=restauranttable(refresh_list);
+		return newmodel;
+	}
 }

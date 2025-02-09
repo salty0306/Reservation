@@ -341,4 +341,17 @@ public class restaurant_selectview_1 extends JPanel{
 		}
 		return newmodel;
 	}
+	
+	public void resetfield() {
+		login_restaurant=null;
+		restaurant_name.setText("");
+		DefaultTableModel init=initmodel();
+		datatable.setModel(init);
+	}
+	
+	public DefaultTableModel initmodel() {
+		DefaultTableModel newmodel=new DefaultTableModel();
+		
+		return newmodel;
+	}
 }

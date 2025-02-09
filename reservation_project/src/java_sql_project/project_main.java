@@ -32,7 +32,12 @@ public class project_main extends JFrame{
 		add(jtab);
 		setVisible(true);
 		jtab.addChangeListener(e -> {
-			
+			int selectindex=jtab.getSelectedIndex();
+			if(selectindex==0) {
+				consumer.resetfield();
+			}else if(selectindex==1) {
+				restaurant.resetfield();
+			}
 		});
 	}
 	
