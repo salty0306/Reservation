@@ -9,12 +9,16 @@ import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,8 +27,16 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import java_sql_project.domain.consumer;
+import java_sql_project.domain.reservation;
+import java_sql_project.domain.restaurant;
+import java_sql_project.service.consumer_service;
+import java_sql_project.service.reservation_service;
+import java_sql_project.service.restaurant_service;
+
 public class restaurant_selectview_1 extends JPanel{
 	
+	public static restaurant login_restaurant;
 	public JPanel leftpanel;
 	public JPanel centerpanel;
 	public JPanel toppanel;
@@ -37,6 +49,9 @@ public class restaurant_selectview_1 extends JPanel{
 	public JTextField Passfield;
 	public JButton Menubtn;
 	public JButton Menulist;
+	public JLabel reservelabel;
+	public JButton reservecancelbtn;
+	
 	public JLabel restaurant_name_label;
 	public JTextField restaurant_name;
 	
@@ -69,7 +84,7 @@ public class restaurant_selectview_1 extends JPanel{
 		registerbtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 		signtbtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 	
-		Idlabel=new JLabel("아이디");
+		Idlabel=new JLabel("아이디(식당이름)");
 		Idfield=new JTextField();
 		Idfield.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
 		Idfield.setPreferredSize(new Dimension(100, 20));
@@ -92,6 +107,9 @@ public class restaurant_selectview_1 extends JPanel{
 		leftpanel.add(Passfield);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		leftpanel.add(Menulist);
+		
+		
+		
 		add(leftpanel, BorderLayout.WEST);
 		
 		
@@ -179,9 +197,29 @@ public class restaurant_selectview_1 extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//select로 pw, name에 해당하는 식당 정보를 가져오고, 예약 현황도 보여준다.
+				restaurant_service res_service=restaurant_service.getInstance();
+				reservation_service reserve_service=reservation_service.getInstance();
+				List<reservation> reservation_list=new ArrayList<>();
+				
 				String name=Idfield.getText();
 				String pw=Passfield.getText();
+				restaurant login=res_service.login_restaurant(name,pw);
+				login_restaurant=login;
 				
+				if(login_restaurant!=null) {
+					JOptionPane.showMessageDialog(null,"안녕하세요."+name+" 씨","로그인 성공!!", JOptionPane.INFORMATION_MESSAGE);
+					reservation_list=reserve_service.reservation_restaurant(login_restaurant.getName());
+					model=reservation_table(reservation_list);
+					
+					restaurant_name.setText(name);
+					datatable.setModel(model);
+					Idfield.setText("");
+					Passfield.setText("");
+				}else {
+					JOptionPane.showMessageDialog(null,"아이디나 비밀번호를 확인해 주세요!!","로그인 실패!!", JOptionPane.WARNING_MESSAGE);
+					Idfield.setText("");
+					Passfield.setText("");
+				}
 				
 				System.out.println(name+": "+pw);
 			}
@@ -196,5 +234,47 @@ public class restaurant_selectview_1 extends JPanel{
 				register_menu_restaurant register=new register_menu_restaurant("", "");
 			}
 		});
+	}
+	
+	public DefaultTableModel reservation_table(List<reservation> list) {
+		DefaultTableModel newmodel=new DefaultTableModel();
+		consumer_service consumerservice=consumer_service.getInstance();
+		
+		List<consumer> consumer_list=new ArrayList<>();
+		
+		newmodel.addColumn("rownum");
+		newmodel.addColumn("consumer id");
+		newmodel.addColumn("consumer name");
+		newmodel.addColumn("reservation date");
+		newmodel.addColumn("reservation time");
+		newmodel.addColumn("number");
+		newmodel.addColumn("status");
+		newmodel.addColumn("created_at");
+		
+		for(int i=0;i<list.size();i++) {
+			reservation element=list.get(i);
+			consumer consumer_element=consumerservice.get_consumer(element.getConsumer_id());
+			
+			String reservation_consumer_id=element.getConsumer_id();
+			String reservation_consumer_name=consumer_element.getName();
+			String reservation_date=String.valueOf(element.getReservation_date());
+			String reservation_time=String.valueOf(element.getReservation_time());
+			int reservation_num=element.getNumber_of_people();
+			String reservation_status=String.valueOf(element.getStatus());
+			String reservation_create=String.valueOf(element.getCreated_at());
+			Vector<String> row=new Vector<>(); 
+
+			row.add(String.valueOf(i+1));
+			row.add(reservation_consumer_id);
+			row.add(reservation_consumer_name);
+			row.add(reservation_date);
+			row.add(reservation_time);
+			row.add(String.valueOf(reservation_num));
+			row.add(reservation_status);
+			row.add(reservation_create);
+			
+			newmodel.addRow(row);
+		}
+		return newmodel;
 	}
 }
