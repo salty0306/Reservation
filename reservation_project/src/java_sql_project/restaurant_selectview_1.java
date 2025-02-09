@@ -224,7 +224,10 @@ public class restaurant_selectview_1 extends JPanel{
 				String pw=Passfield.getText();
 				restaurant login=res_service.login_restaurant(name,pw);
 				login_restaurant=login;
-				
+				if(name.length()==0||pw.length()==0) {
+					JOptionPane.showMessageDialog(null,"아이디나 비밀번호를 확인해 주세요!!","로그인 실패!!", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 				if(login_restaurant!=null) {
 					JOptionPane.showMessageDialog(null,"안녕하세요."+name+" 씨","로그인 성공!!", JOptionPane.INFORMATION_MESSAGE);
 					reservation_list=reserve_service.reservation_restaurant(login_restaurant.getName());
@@ -283,7 +286,10 @@ public class restaurant_selectview_1 extends JPanel{
 				reservation_service reserve_service=reservation_service.getInstance();
 				String consumer_id=reserve_cancel_txt_1.getText();
 				String date_value=reserve_cancel_txt_2.getText();
-				
+				if(consumer_id.length()==0||date_value.length()==0) {
+					JOptionPane.showMessageDialog(null,"예약이 취소되지 않았습니다.","예약 취소 오류!!", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 				if(reserve_service.reservation_delete_consumer(login_restaurant.getId(), consumer_id, date_value)) {
 					JOptionPane.showMessageDialog(null,"예약이 정상 취소되었습니다","예약 취소!!!", JOptionPane.INFORMATION_MESSAGE);
 				}else {
