@@ -10,9 +10,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import java_sql_project.domain.restaurant;
+import java_sql_project.service.restaurant_service;
 
 public class register_restaurant extends JFrame{
 	
@@ -71,6 +75,7 @@ public class register_restaurant extends JFrame{
 		location_city.setPreferredSize(new Dimension(600,40));
 		
 		description_label=new JLabel("음식 종류");
+		description_label.setToolTipText("가급적 '일식','양식','중식' 이런식으로 작성해주세요!!");
 		description=new JTextField();
 		description.setMaximumSize(new Dimension(600,40));
 		description.setPreferredSize(new Dimension(600,40));
@@ -99,9 +104,29 @@ public class register_restaurant extends JFrame{
 		registerbtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				restaurant_service restservice=restaurant_service.getInstance();
+				int cnt=restservice.restaurant_count();
+				restaurant newrestaurant=new restaurant();
+				
 				String restaurant_name_value=name.getText();
 				String owner_name_value=owner_name.getText();
 				String pw_value=owner_pw.getText();
+				String restaurant_state=location_state.getText();
+				String restaurant_city=location_city.getText();
+				String type=description.getText();
+				
+				newrestaurant.setName(restaurant_name_value);
+				newrestaurant.setOwner_name(owner_name_value);
+				newrestaurant.setOwner_pw(pw_value);
+				newrestaurant.setLocation_state(restaurant_state);
+				newrestaurant.setLocation_city(restaurant_city);
+				newrestaurant.setDescription(type);
+				
+				if(restservice.sign_restaurant(newrestaurant, cnt)) {
+					JOptionPane.showMessageDialog(null,"회원가입이 정상적으로 처리되었습니다.","회원 가입 성공!!", JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(null,"알 수 없는 오류로 회원가입이 실패하였습니다.","회원 가입 실패!!", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 	}

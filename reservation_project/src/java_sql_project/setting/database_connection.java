@@ -19,8 +19,12 @@ public class database_connection {
 			System.out.println(url+" "+id+" "+pw);
 			conn=DriverManager.getConnection(url, id, pw);
 			
-			if(conn!=null) System.out.println("DB 연결 완료!!!");
-			else System.out.println("연결이 존재하지 않습니다.");
+			if(conn!=null) {
+				
+			}
+			else {
+				System.out.println("연결이 존재하지 않습니다.");
+			}
 			
 		}catch (Exception e) {
 			System.out.println("DB 연결 실패!!!");
@@ -34,7 +38,6 @@ public class database_connection {
 		try {
 			if(conn!=null) {
 				conn.close();
-				System.out.println("DB 연결 종료");
 			}else {
 				System.out.println("DB 연결이 존재하지 않습니다!");
 			}
