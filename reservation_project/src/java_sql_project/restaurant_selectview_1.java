@@ -50,6 +50,8 @@ public class restaurant_selectview_1 extends JPanel{
 	public JButton Menubtn;
 	public JButton Menulist;
 	public JLabel reservelabel;
+	public JTextField reserve_cancel_txt_1;
+	public JTextField reserve_cancel_txt_2;
 	public JButton reservecancelbtn;
 	
 	public JLabel restaurant_name_label;
@@ -95,11 +97,20 @@ public class restaurant_selectview_1 extends JPanel{
 		Menubtn=new JButton("신규 메뉴 등록");
 		Menulist=new JButton("메뉴 조회");
 		
+		reservelabel=new JLabel("예약 취소");
+		reservelabel.setToolTipText("예약자의 아이디, 예약 날짜(2000-01-01)를 입력하면 됩니다");
+		reserve_cancel_txt_1=new JTextField();
+		reserve_cancel_txt_1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
+		reserve_cancel_txt_1.setPreferredSize(new Dimension(100, 20));
+		reserve_cancel_txt_2=new JTextField();
+		reserve_cancel_txt_2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
+		reserve_cancel_txt_2.setPreferredSize(new Dimension(100, 20));
+		reservecancelbtn=new JButton("취소하기");
+		
 		leftpanel.add(registerbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		leftpanel.add(signtbtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
-		leftpanel.add(Menubtn);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		leftpanel.add(Idlabel);
 		leftpanel.add(Idfield);
@@ -107,8 +118,16 @@ public class restaurant_selectview_1 extends JPanel{
 		leftpanel.add(Passfield);
 		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		leftpanel.add(Menulist);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		leftpanel.add(Menubtn);
 		
-		
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		leftpanel.add(reservelabel);
+		leftpanel.add(reserve_cancel_txt_1);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		leftpanel.add(reserve_cancel_txt_2);
+		leftpanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		leftpanel.add(reservecancelbtn);
 		
 		add(leftpanel, BorderLayout.WEST);
 		
@@ -252,6 +271,23 @@ public class restaurant_selectview_1 extends JPanel{
 					
 				}else {
 					JOptionPane.showMessageDialog(null,"식당으로 로그인해주세요!!","로그인!!", JOptionPane.WARNING_MESSAGE);
+				}
+				
+			}
+		});
+		reservecancelbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				reservation_service reserve_service=reservation_service.getInstance();
+				String consumer_id=reserve_cancel_txt_1.getText();
+				String date_value=reserve_cancel_txt_2.getText();
+				
+				if(reserve_service.reservation_delete_consumer(login_restaurant.getId(), consumer_id, date_value)) {
+					JOptionPane.showMessageDialog(null,"예약이 정상 취소되었습니다","예약 취소!!!", JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(null,"예약이 취소되지 않았습니다.","예약 취소 오류!!", JOptionPane.WARNING_MESSAGE);
 				}
 				
 			}
