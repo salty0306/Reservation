@@ -279,11 +279,7 @@ public class reservation_service {
 		return true;
 	}
 	
-	//예약 삭제(식당이 자발적으로)(delete 문)
-	public boolean reservation_delete_restaurant() {
-		return true;
-	}
-	//예약 삭제(손님이 자발적으로)(delete 문)
+	//예약 삭제(손님, 식당이 자발적으로)(delete 문)
 	public boolean reservation_delete_consumer(String restaurant_id, String user_id, String reservation_date) {
 		Connection conn=database_connection.conection();
 		String sql=sql_list[7];

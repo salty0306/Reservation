@@ -99,7 +99,9 @@ public class register_restaurant extends JFrame{
 		registerbtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				String restaurant_name_value=name.getText();
+				String owner_name_value=owner_name.getText();
+				String pw_value=owner_pw.getText();
 			}
 		});
 	}

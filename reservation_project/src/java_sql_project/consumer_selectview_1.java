@@ -90,7 +90,7 @@ public class consumer_selectview_1 extends JPanel{
 		registerbtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 		signtbtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 	
-		Idlabel=new JLabel("아이디");
+		Idlabel=new JLabel("아이디(손님 이름)");
 		Idfield=new JTextField();
 		Idfield.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
 		Idfield.setPreferredSize(new Dimension(100, 20));
