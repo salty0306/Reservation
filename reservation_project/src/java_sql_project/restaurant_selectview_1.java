@@ -28,9 +28,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java_sql_project.domain.consumer;
+import java_sql_project.domain.menu;
 import java_sql_project.domain.reservation;
 import java_sql_project.domain.restaurant;
 import java_sql_project.service.consumer_service;
+import java_sql_project.service.menu_service;
 import java_sql_project.service.reservation_service;
 import java_sql_project.service.restaurant_service;
 
@@ -246,16 +248,36 @@ public class restaurant_selectview_1 extends JPanel{
 				System.out.println(name+": "+pw);
 			}
 		});
-		
+		Menulist.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(login_restaurant!=null) {
+					menu_service menuservice=menu_service.getInstance();
+					String id=login_restaurant.getId();
+					List<menu> list=menuservice.getMenusByRestaurantId(id);
+					model=menu_table(list);
+					datatable.setModel(model);
+				}else {
+					JOptionPane.showMessageDialog(null, "식당으로 로그인해주세요!!", "로그인 필요!!", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		Menubtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if (login_restaurant != null) {
+					// register_menu_restaurant는 메뉴 등록 폼을 관리하는 클래스
+					String id = login_restaurant.getId();
+					String name = login_restaurant.getName();
+					register_menu_restaurant register = new register_menu_restaurant(id, name);
+				} else {
+					JOptionPane.showMessageDialog(null, "식당으로 로그인해주세요!!", "로그인 필요!!", JOptionPane.WARNING_MESSAGE);
+				}
 
-				String name=Idfield.getText();
-				String pw=Passfield.getText();
-				register_menu_restaurant register=new register_menu_restaurant(name, pw);
 			}
 		});
 		refreshbtn.addActionListener(new ActionListener() {
@@ -336,6 +358,35 @@ public class restaurant_selectview_1 extends JPanel{
 			row.add(String.valueOf(reservation_num));
 			row.add(reservation_status);
 			row.add(reservation_create);
+			
+			newmodel.addRow(row);
+		}
+		return newmodel;
+	}
+	
+	public DefaultTableModel menu_table(List<menu> list) {
+		DefaultTableModel newmodel=new DefaultTableModel();
+		
+		newmodel.addColumn("rownum");
+		newmodel.addColumn("menu id");
+		newmodel.addColumn("menu name");
+		newmodel.addColumn("price");
+		newmodel.addColumn("description");
+		
+		for(int i=0;i<list.size();i++) {
+			menu element=list.get(i);
+			
+			String menu_id=element.getId();
+			String menu_name=element.getName();
+			int price=element.getPrice();
+			String description=element.getDescription();
+			Vector<String> row=new Vector<>(); 
+
+			row.add(String.valueOf(i+1));
+			row.add(menu_id);
+			row.add(menu_name);
+			row.add(String.valueOf(price));
+			row.add(description);
 			
 			newmodel.addRow(row);
 		}

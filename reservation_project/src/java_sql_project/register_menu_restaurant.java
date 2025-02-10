@@ -2,14 +2,19 @@ package java_sql_project;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import java_sql_project.domain.menu;
+import java_sql_project.service.menu_service;
 
 public class register_menu_restaurant extends JFrame{
 	public String menu_id;
@@ -66,6 +71,32 @@ public class register_menu_restaurant extends JFrame{
 		centerpanel.add(registerbtn);
 		
 		add(centerpanel,BorderLayout.CENTER);
+		registerbtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				menu_service menuservice = menu_service.getInstance();
+				int cnt=menuservice.menu_count();
+				menu newmenu = new menu();
+
+				String menu_name=name_field.getText();
+				Integer menu_price=Integer.parseInt(price_field.getText());
+				String menu_type=type_field.getText();
+
+				newmenu.setId(Integer.toString(cnt+1));
+				newmenu.setRestaurant_id(restarantid);
+				newmenu.setName(menu_name);
+				newmenu.setPrice(menu_price);
+				newmenu.setDescription(menu_type);
+				dispose();
+
+				if(menuservice.insertMenu(newmenu, cnt)) {
+					JOptionPane.showMessageDialog(null, "메뉴 등록이 정상적으로 처리되었습니다.", "메뉴 등록 성공!!", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "메뉴 등록이 실패하였습니다.", "메뉴 등록 실패!!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
 	}
 
 }
