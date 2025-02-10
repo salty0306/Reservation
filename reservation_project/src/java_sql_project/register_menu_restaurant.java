@@ -75,21 +75,21 @@ public class register_menu_restaurant extends JFrame{
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				menu_service menuservice = menu_service.getInstance();
-				int cnt=menuservice.menu_count();
+				int newId = menuservice.menu_count(); // 가장 큰 메뉴 ID 조회
 				menu newmenu = new menu();
 
 				String menu_name=name_field.getText();
 				Integer menu_price=Integer.parseInt(price_field.getText());
 				String menu_type=type_field.getText();
 
-				newmenu.setId(Integer.toString(cnt+1));
+				newmenu.setId(String.format("M%03d", newId)); // 새 ID를 형식에 맞게 설정
 				newmenu.setRestaurant_id(restarantid);
 				newmenu.setName(menu_name);
 				newmenu.setPrice(menu_price);
 				newmenu.setDescription(menu_type);
 				dispose();
 
-				if(menuservice.insertMenu(newmenu, cnt)) {
+				if(menuservice.insertMenu(newmenu)){
 					JOptionPane.showMessageDialog(null, "메뉴 등록이 정상적으로 처리되었습니다.", "메뉴 등록 성공!!", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, "메뉴 등록이 실패하였습니다.", "메뉴 등록 실패!!", JOptionPane.ERROR_MESSAGE);

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import java_sql_project.domain.menu;
@@ -26,8 +25,9 @@ public class menu_service {
 			"INSERT INTO Menus(menu_id, restaurant_id, menu_name, price, description) VALUES(?,?,?,?,?)",
 			"SELECT * FROM Menus WHERE restaurant_id = ?",
 	        "SELECT * FROM Menus WHERE menu_name LIKE ?",
-	        "DELETE FROM Menus WHERE menu_id = ?",
-			"SELECT COUNT(*) FROM Menus"
+            "DELETE FROM Menus WHERE menu_id = ? AND restaurant_id = ?",
+			// "SELECT COUNT(*) FROM Menus"
+            "SELECT MAX(CAST(SUBSTRING(menu_id, 2, LENGTH(menu_id)-1) AS UNSIGNED)) FROM Menus"
 	};
 
 	public menu_service() {
@@ -42,24 +42,26 @@ public class menu_service {
 	 * 식당 아이디와 메뉴 이름을 입력 받고 해당 메뉴를 출력하는 select 문
 	 */
 	
-	public int menu_count() {
-		Connection conn = database_connection.conection();
-		String sql = sql_list[7];
-		int count = 0;
 
-		try {
-			stmt = conn.createStatement();
-			rst = stmt.executeQuery(sql);
-			if(rst.next()) {
-				count = rst.getInt(1);
-			}
-			database_connection.close();
-		} catch (SQLException e) {
-			System.out.println("메뉴 전체 목록 조회 실패.");
-			e.printStackTrace();
-		}
-		return count;
-	}
+     public int menu_count() {
+        Connection conn = database_connection.conection();
+        String sql = sql_list[7];
+        int maxId = 0;
+    
+        try {
+            stmt = conn.createStatement();
+            rst = stmt.executeQuery(sql);
+            if(rst.next()) {
+                maxId = rst.getInt(1);
+            }
+            database_connection.close();
+        } catch (SQLException e) {
+            System.out.println("메뉴ID 최대값 불러오기 실패.");
+            e.printStackTrace();
+        }
+        return maxId + 1; // 다음 메뉴 ID 반환
+    }
+    
 
 
 	// 모든 메뉴 목록 조회
@@ -91,10 +93,10 @@ public class menu_service {
 
 	
 	//메뉴 등록(insert 문)
-	public boolean insertMenu(menu menu, int count) {
+	public boolean insertMenu(menu menu) {
 
 		try {
-			String menu_id = String.format("M%03d", count + 1);
+			String menu_id = String.format("M%03d", menu_count());
 			menu.setId(menu_id);
 			conn = database_connection.conection(); // 올바른 메소드 이름을 사용하여 데이터베이스 연결
 			pstd = conn.prepareStatement(sql_list[3]);
@@ -201,23 +203,26 @@ public class menu_service {
 
         return menus;
     }
-	
+
 	//메뉴 삭제(메뉴 아이디)(delete 문)
-	 public boolean deleteMenu(String menuId) {
-		int deletemenu=0;
-        conn = database_connection.conection(); 
+	 public boolean deleteMenu(String restaurant_id, String menuId) {
+        Connection conn = database_connection.conection(); 
         String sql=sql_list[6];
         try {
-            pstd = conn.prepareStatement(sql_list[5]);
+            pstd = conn.prepareStatement(sql);
             pstd.setString(1, menuId);
+            pstd.setString(2, restaurant_id);
 
             int result = pstd.executeUpdate();
-            return result > 0;
+            if (result > 0) {
+                System.out.println(result + "개의 메뉴가 삭제되었습니다.");
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            database_connection.close();
         }
     }
 
